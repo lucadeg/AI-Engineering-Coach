@@ -205,15 +205,28 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
 /* ── Current Streak (Fixed) ───────────────────────────────────────── */
 
 function computeCurrentStreak(labels: string[], values: number[]): number {
+  if (labels.length === 0 || values.length === 0) return 0;
+
+  const toUtcDay = (label: string): number => {
+    const [year, month, day] = label.split('-').map(Number);
+    return Date.UTC(year, month - 1, day);
+  };
+
+  const today = new Date();
+  const todayUtcDay = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+  const lastActivityUtcDay = toUtcDay(labels[labels.length - 1]);
+  const gapFromToday = Math.round((todayUtcDay - lastActivityUtcDay) / 86400000);
+  if (gapFromToday > 1) return 0;
+
   // Walk backwards from today, only count consecutive CALENDAR days with activity
   let streak = 0;
   for (let i = labels.length - 1; i >= 0; i--) {
     if (values[i] <= 0) break;
     // Check calendar day consecutiveness
     if (i < labels.length - 1) {
-      const curr = new Date(labels[i] + 'T00:00:00');
-      const next = new Date(labels[i + 1] + 'T00:00:00');
-      const gap = Math.round((next.getTime() - curr.getTime()) / 86400000);
+      const curr = toUtcDay(labels[i]);
+      const next = toUtcDay(labels[i + 1]);
+      const gap = Math.round((next - curr) / 86400000);
       if (gap !== 1) break;
     }
     streak++;
