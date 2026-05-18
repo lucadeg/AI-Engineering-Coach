@@ -81,13 +81,13 @@
         "id": "aiEngineerCoach.aicoach",
         "fullName": "AI Engineering Coach",
         "name": "aicoach",
-        "description": "Your AI coding coach — analyse usage patterns, get improvement tips, and track progress",
+        "description": "Your AI coding coach — analyze usage patterns, get improvement tips, and track progress",
         "isSticky": true,
         "commands": [
           { "name": "summary", "description": "Get a quick summary of your AI coding usage" },
           { "name": "improve", "description": "Get improvement recommendations" },
           { "name": "compare", "description": "Compare your AI coding tools" },
-          { "name": "flow", "description": "Analyse your flow & focus" }
+          { "name": "flow", "description": "Analyze your flow & focus" }
         ]
       }
     ],
